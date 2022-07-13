@@ -74,9 +74,10 @@ public class Display extends Canvas implements Runnable {
             while(delta >= 1){
                 update();
                 delta--;
+                render();
+                frames++;
             }
-            render();
-            frames++;
+
 
             if(System.currentTimeMillis() - timer > 1000){ //1s == 1000ms, entao isso atualiza o fps a cada s q o programa roda
                 timer += 1000;
@@ -128,6 +129,6 @@ public class Display extends Canvas implements Runnable {
     }
 
     private void update(){
-
+        this.tetrahedron.rotate(true, 1, 1, 1);
     }
 }

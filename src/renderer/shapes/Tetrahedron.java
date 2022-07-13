@@ -1,5 +1,8 @@
 package renderer.shapes;
 
+import renderer.point.MyPoint;
+import renderer.point.PointConverter;
+
 import java.awt.*;
 
 public class Tetrahedron {
@@ -19,8 +22,15 @@ public class Tetrahedron {
         }
     }
 
-    private void sortPolygons() {
+    public void rotate(boolean CW, double xDegrees, double yDegrees, double zDegrees){
+        for(MyPolygon polygon: this.polygons){
+            polygon.rotate(CW, xDegrees, yDegrees, zDegrees);
+        }
+        this.sortPolygons();
+    }
 
+    private void sortPolygons() {
+        MyPolygon.sortPolygons(this.polygons);
     }
 
     private void setPolygonColor() {

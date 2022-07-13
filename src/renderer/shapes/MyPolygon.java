@@ -4,6 +4,8 @@ import renderer.point.MyPoint;
 import renderer.point.PointConverter;
 
 import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 public class MyPolygon {
 
@@ -30,7 +32,41 @@ public class MyPolygon {
         graphics.fillPolygon(polygon);
     }
 
+    public void rotate(boolean CW, double xDegrees, double yDegrees, double zDegrees){
+        for(MyPoint point: points){
+            PointConverter.rotateAxisX(point, CW, xDegrees);
+            PointConverter.rotateAxisY(point, CW, yDegrees);
+            PointConverter.rotateAxisZ(point, CW, zDegrees);
+        }
+    }
+
+    public double getAverageX(){
+        double sum = 0;
+        for(MyPoint point: this.points){
+            sum += point.x;
+        }
+
+        return sum/points.length;
+    }
+
     public void setColor(Color color){
         this.color = color;
+    }
+
+    public static MyPolygon[] sortPolygons(MyPolygon[] polygons){
+        List<MyPolygon> polygonList = new ArrayList<>(Arrays.asList(polygons));
+
+        Collections.sort(polygonList, new Comparator<MyPolygon>() {
+            @Override
+            public int compare(MyPolygon p1, MyPolygon p2) {
+                return p2.getAverageX() - p1.getAverageX() < 0 ? 1 : -1;
+            }
+        });
+
+        for(int i = 0;i < polygons.length; i++){
+            polygons[i] = polygonList.get(i);
+        }
+
+        return polygons;
     }
 }
