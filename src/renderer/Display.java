@@ -1,5 +1,8 @@
 package renderer;
 
+import com.sun.xml.internal.bind.v2.runtime.output.StAXExStreamWriterOutput;
+import renderer.input.Mouse;
+import renderer.input.enumeration.ClickType;
 import renderer.point.MyPoint;
 import renderer.shapes.MyPolygon;
 import renderer.shapes.Tetrahedron;
@@ -20,11 +23,18 @@ public class Display extends Canvas implements Runnable {
 
     private Tetrahedron tetrahedron;
 
+    private Mouse mouse;
+
     public Display() {
         this.frame = new JFrame();
 
         Dimension size = new Dimension(WIDHT, HEIGHT);
         this.setPreferredSize(size);
+
+        this.mouse = new Mouse();
+
+        this.addMouseListener(this.mouse);
+        this.addMouseMotionListener(this.mouse);
     }
 
     public static void main(String[] args){
@@ -101,6 +111,13 @@ public class Display extends Canvas implements Runnable {
         MyPoint p7 = new MyPoint(-size/2, -size/2, size/2);
         MyPoint p8 = new MyPoint(-size/2, size/2, size/2);
 
+//        PIRAMIDE
+//        MyPoint p1 = new MyPoint(0, 0, size+(size/2));
+//        MyPoint p2 = new MyPoint(size/2, size / 2, size/2);
+//        MyPoint p3 = new MyPoint(size/2, -size/2, size/2);
+//        MyPoint p4 = new MyPoint(-size/2, -size/2, size/2);
+//        MyPoint p5 = new MyPoint(-size/2, size/2, size/2);
+
        this.tetrahedron = new Tetrahedron(Color.YELLOW,
                new MyPolygon(Color.BLACK, p1, p2, p3, p4),
                new MyPolygon(Color.RED, p1, p2, p7, p6),
@@ -128,7 +145,16 @@ public class Display extends Canvas implements Runnable {
         bs.show();
     }
 
+    int initialX, initialY = 0;
     private void update(){
         this.tetrahedron.rotate(true, 1, 1, 1);
+        if(this.mouse.getButton().equals(ClickType.LeftClick)){
+            initialX = this.mouse.getX();
+            initialY = this.mouse.getY();
+        }
+        //System.out.println(this.mouse.getX() + ", " + this.mouse.getY());
+        System.out.println(this.mouse.getButton());
+
+        this.mouse.resetButton();
     }
 }
